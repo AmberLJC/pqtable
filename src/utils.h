@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <fstream>
 #include <time.h>
-
+#include <omp.h>
 
 namespace pqtable {
 

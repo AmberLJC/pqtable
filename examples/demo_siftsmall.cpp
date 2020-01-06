@@ -40,11 +40,37 @@ int main(){
     // (6) Do search
     std::cout << "=== Do search ===" << std::endl;
     double t0 = pqtable::Elapsed();
+    /*
     for(int q = 0; q < (int) queries.size(); ++q){
         std::pair<int, float> result = tbl.Query(queries[q]);  // result = (nearest_id, its_dist)
         std::cout << q << "th query: nearest_id=" << result.first << ", dist=" << result.second << std::endl;
     }
+     */
+    std::vector<std::vector<std::pair<int, float> > >
+                                           ranked_scores(queries.size(), std::vector<std::pair<int, float> >(top_k));
+    for(int q = 0; q < (int) queries.size(); ++q){
+        ranked_scores[q] = tbl.Query(queries[q], top_k);
+    }
+
+
+
     std::cout << (pqtable::Elapsed() - t0) / queries.size() * 1000 << " [msec/query]" << std::endl;
+
+    std::cout << "=== Search Result ===" << std::endl;
+    for(int q = 0; q < (int) queries[0].size(); ++q){
+        std::cout << "[ "<< ranked_scores[0][q].first <<" , "<<  ranked_scores[0][q].second<<"]. ";
+    }
+    std::cout << std::endl;
+
+    /*std::vector<int> gt_index;
+    std::cout << "=== Find ground truth ===" << std::endl;
+    for(int q = 0; q < (int) queries.size(); ++q){
+        for (int i = 0; i < bases.size(); ++i){
+        }
+    }*/
+
+
+
 
 
     return 0;
