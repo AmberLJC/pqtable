@@ -10,6 +10,16 @@ int main(){
     std::vector<std::vector<float> > bases = pqtable::ReadTopN("../../data/siftsmall/siftsmall_base.fvecs", "fvecs");
     std::vector<std::vector<float> > learns = pqtable::ReadTopN("../../data/siftsmall/siftsmall_learn.fvecs", "fvecs");
 
+    std::cout<<"bases data shape: "<<std::Endl;
+    std::cout<<bases.size()<<" * "<<bases[0].size()<<std::endl;
+
+    std::cout<<"learn data shape: "<<std::Endl;
+    std::cout<<learns.size()<<" * "<<learns[0].size()<<std::endl;
+
+
+    std::cout<<"queries data shape: "<<std::Endl;
+    std::cout<<queries.size()<<" * "<<queries[0].size()<<std::endl;
+
 
     // (3) Train a product quantizer
     int M = 4;
