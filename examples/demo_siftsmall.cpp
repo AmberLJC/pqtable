@@ -1,6 +1,15 @@
 #include "pq_table.h"
 #include "utils.h"
 
+float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
+    float res = 0;
+#pragma omp parallel for
+    for (int i = 0; i < a.size(); ++i){
+        res += (a[i]-b[i])* (a[i]-b[i]);
+    }
+
+return res;
+}
 
 int main(){
     // (1) Make sure you have already downloaded siftsmall data in data/ by scripts/download_siftsmall.sh
@@ -46,13 +55,12 @@ int main(){
         std::cout << q << "th query: nearest_id=" << result.first << ", dist=" << result.second << std::endl;
     }
      */
+    int top_k = 100;
     std::vector<std::vector<std::pair<int, float> > >
                                            ranked_scores(queries.size(), std::vector<std::pair<int, float> >(top_k));
     for(int q = 0; q < (int) queries.size(); ++q){
         ranked_scores[q] = tbl.Query(queries[q], top_k);
     }
-
-
 
     std::cout << (pqtable::Elapsed() - t0) / queries.size() * 1000 << " [msec/query]" << std::endl;
 
@@ -62,12 +70,18 @@ int main(){
     }
     std::cout << std::endl;
 
-    /*std::vector<int> gt_index;
+    std::vector<int> gt_index;
     std::cout << "=== Find ground truth ===" << std::endl;
     for(int q = 0; q < (int) queries.size(); ++q){
+        int min_idx = -1;
+        float min_dis = 1e20;
         for (int i = 0; i < bases.size(); ++i){
+
+
+
+
         }
-    }*/
+    }
 
 
 
