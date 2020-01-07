@@ -69,7 +69,7 @@ int main(){
     std::vector<int> gt_index;
     gt_index.resize( queries.size());
 
-    std::vector<int> gt_dis;
+    std::vector<float> gt_dis;
     gt_dis.resize( queries.size());
     float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
@@ -92,9 +92,9 @@ int main(){
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];
-        std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << gt_dis[i] << std::endl;
+        std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << sqrt(gt_dis[i]) << std::endl;
         std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", with real dist = "
-                    << eucl_dist_vec(queries[i], bases[gt_nn] ) << std::endl;
+                    << sqrt(eucl_dist_vec(queries[i], bases[gt_nn]) ) << std::endl;
         for(size_t j = 0; j < queries[0].size(); j++) {
             if (ranked_scores[i][j].first == gt_nn ){
                 if(j < 1) n_1++;
