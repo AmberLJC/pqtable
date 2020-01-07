@@ -32,7 +32,7 @@ int main(){
 
 
     // (3) Train a product quantizer
-    int M = 16;
+    int M = 64;
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
 
@@ -87,7 +87,7 @@ int main(){
         gt_dis[q] = min_dis;
     }
     std::cout << "=== Search Result ===" << std::endl;
-    for(int q = 0; q < ranked_scores[0].size(); ++q){
+    for(size_t q = 0; q < ranked_scores[0].size(); ++q){
         std::cout <<"#"<<q<< "# [ "<< ranked_scores[0][q].first <<" , "<<  ranked_scores[0][q].second<<"]. ";
     }
     std::cout << std::endl;
