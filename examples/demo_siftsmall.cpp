@@ -4,7 +4,7 @@
 float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
     float res = 0;
 #pragma omp parallel for
-    for (int i = 0; i < a.size(); ++i){
+    for (size_t i = 0; i < a.size(); ++i){
         res += (a[i]-b[i])* (a[i]-b[i]);
     }
 
@@ -31,7 +31,7 @@ int main(){
 
 
     // (3) Train a product quantizer
-    int M = 4;
+    int M = 32;
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
 
@@ -71,7 +71,7 @@ int main(){
     for(int q = 0; q < (int) queries.size(); ++q){
         int min_idx = -1;
         float min_dis = 1e20;
-        for (int i = 0; i < bases.size(); ++i){
+        for (size_t i = 0; i < bases.size(); ++i){
             tmp_res = eucl_dist_vec(bases[i],queries[q]);
             if (tmp_res < min_dis){
                 min_dis = tmp_res;
@@ -85,7 +85,7 @@ int main(){
 
 
     int n_1 = 0, n_10 = 0, n_100 = 0;
-    for(int i = 0; i < queries.size(); i++) {
+    for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];
         for(int j = 0; j < queries[0].size(); j++) {
             if (ranked_scores[i][j].first == gt_nn ){
