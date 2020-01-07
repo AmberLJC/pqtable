@@ -87,7 +87,7 @@ int main(){
         gt_dis[q] = min_dis;
     }
     std::cout << "=== Search Result ===" << std::endl;
-    for(int q = 0; q < (int) queries[0].size(); ++q){
+    for(int q = 0; q < ranked_scores[0].size(); ++q){
         std::cout <<"#"<<q<< "# [ "<< ranked_scores[0][q].first <<" , "<<  ranked_scores[0][q].second<<"]. ";
     }
     std::cout << std::endl;
