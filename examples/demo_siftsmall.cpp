@@ -87,7 +87,7 @@ int main(){
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(int i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];
-        for(int j = 0; j < k; j++) {
+        for(int j = 0; j < queries[0].size(); j++) {
             if (ranked_scores[i][j].first == gt_nn ){
                 if(j < 1) n_1++;
                 if(j < 10) n_10++;
