@@ -88,7 +88,7 @@ int main(){
     }
     std::cout << "=== Search Result ===" << std::endl;
     for(size_t q = 0; q < ranked_scores[0].size(); ++q){
-        std::cout <<"#"<<q<< "# [ "<< ranked_scores[0][q].first <<" , "<<  ranked_scores[0][q].second<<"]. ";
+        std::cout <<"#"<<q<< "# [ "<<  ranked_scores[0][q].second<< " vs. "<< eucl_dist_vec(bases[ranked_scores[0][q].first],queries[0]); <<" ]. ";
     }
     std::cout << std::endl;
 
@@ -108,8 +108,6 @@ int main(){
     printf("R@1 = %.3f\n", n_1 / float(queries.size()));
     printf("R@10 = %.3f\n", n_10 / float(queries.size()));
     printf("R@100 = %.3f\n", n_100 / float(queries.size()));
-
-
 
 
     return 0;
