@@ -31,7 +31,7 @@ int main(){
 
 
     // (3) Train a product quantizer
-    int M = 32;
+    int M = 16;
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
 
@@ -64,8 +64,12 @@ int main(){
 
     std::cout << (pqtable::Elapsed() - t0) / queries.size() * 1000 << " [msec/query]" << std::endl;
 
+
     std::vector<int> gt_index;
     gt_index.resize( queries.size());
+
+    std::vector<int> gt_dis;
+    gt_dis.resize( queries.size());
     float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
     for(int q = 0; q < (int) queries.size(); ++q){
@@ -79,7 +83,7 @@ int main(){
             }
         }
         gt_index[q] = min_idx;
-
+        gt_dis[q] = min_dis;
     }
 
 
@@ -87,7 +91,9 @@ int main(){
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];
-        for(int j = 0; j < queries[0].size(); j++) {
+        std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << gt_dis[i] << std::endl;
+        std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", dist=" << ranked_scores[i][0].second << std::endl;
+        for(size_t j = 0; j < queries[0].size(); j++) {
             if (ranked_scores[i][j].first == gt_nn ){
                 if(j < 1) n_1++;
                 if(j < 10) n_10++;
@@ -95,9 +101,9 @@ int main(){
             }
         }
     }
-    printf("R@1 = %.4f\n", n_1 / float(queries.size()));
-    printf("R@10 = %.4f\n", n_10 / float(queries.size()));
-    printf("R@100 = %.4f\n", n_100 / float(queries.size()));
+    printf("R@1 = %.3f\n", n_1 / float(queries.size()));
+    printf("R@10 = %.3f\n", n_10 / float(queries.size()));
+    printf("R@100 = %.3f\n", n_100 / float(queries.size()));
 
 
 
