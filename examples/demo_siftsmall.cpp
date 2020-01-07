@@ -30,9 +30,8 @@ int main(){
     std::cout<<"queries data shape: "<<std::endl;
     std::cout<<queries.size()<<" * "<<queries[0].size()<<std::endl;
 
-
     // (3) Train a product quantizer
-    int M = 64;
+    int M = 32;
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
 
@@ -88,7 +87,7 @@ int main(){
     }
     std::cout << "=== Search Result ===" << std::endl;
     for(size_t q = 0; q < ranked_scores[0].size(); ++q){
-        std::cout <<"#"<<q<< "# [ "<<  ranked_scores[0][q].second<< " vs. "<< eucl_dist_vec(bases[ranked_scores[0][q].first],queries[0]) <<" ]. ";
+        std::cout <<"#"<<q<< "# [ "<<  ranked_scores[0][q].second<< " vs. "<< eucl_dist_vec(bases[ranked_scores[0][q].first -1 ],queries[0]) <<" ]. ";
     }
     std::cout << std::endl;
 
@@ -98,7 +97,7 @@ int main(){
        // std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << sqrt(gt_dis[i]) << std::endl;
        // std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", with real dist = " << sqrt(eucl_dist_vec(queries[i], bases[gt_nn]) ) << std::endl;
         for(size_t j = 0; j < queries[0].size(); j++) {
-            if (ranked_scores[i][j].first == gt_nn ){
+            if (ranked_scores[i][j].first-1 == gt_nn ){
                 if(j < 1) n_1++;
                 if(j < 10) n_10++;
                 if(j < 100) n_100++;
