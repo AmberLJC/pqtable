@@ -64,25 +64,40 @@ int main(){
 
     std::cout << (pqtable::Elapsed() - t0) / queries.size() * 1000 << " [msec/query]" << std::endl;
 
-    std::cout << "=== Search Result ===" << std::endl;
-    for(int q = 0; q < (int) queries[0].size(); ++q){
-        std::cout << "[ "<< ranked_scores[0][q].first <<" , "<<  ranked_scores[0][q].second<<"]. ";
-    }
-    std::cout << std::endl;
-
     std::vector<int> gt_index;
+    gt_index.resize( queries.size());
+    float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
     for(int q = 0; q < (int) queries.size(); ++q){
         int min_idx = -1;
         float min_dis = 1e20;
         for (int i = 0; i < bases.size(); ++i){
-
-
-
-
+            tmp_res = eucl_dist_vec(bases[i],queries[q]);
+            if (tmp_res < min_dis){
+                min_dis = tmp_res;
+                min_idx = i;
+            }
         }
+        gt_index[q] = min_idx;
+
     }
 
+
+
+    int n_1 = 0, n_10 = 0, n_100 = 0;
+    for(int i = 0; i < queries.size(); i++) {
+        int gt_nn = gt_index[i];
+        for(int j = 0; j < k; j++) {
+            if (ranked_scores[i][j].first == gt_nn ){
+                if(j < 1) n_1++;
+                if(j < 10) n_10++;
+                if(j < 100) n_100++;
+            }
+        }
+    }
+    printf("R@1 = %.4f\n", n_1 / float(nq));
+    printf("R@10 = %.4f\n", n_10 / float(nq));
+    printf("R@100 = %.4f\n", n_100 / float(nq));
 
 
 
