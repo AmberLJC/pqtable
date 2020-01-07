@@ -1,5 +1,6 @@
 #include "pq_table.h"
 #include "utils.h"
+#include "math.h"
 
 float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
     float res = 0;
@@ -92,7 +93,7 @@ int main(){
     for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];
         std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << gt_dis[i] << std::endl;
-        std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", dist=" << ranked_scores[i][0].second << std::endl;
+        std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", ########dist=" << sqrt(ranked_scores[i][0].second) << std::endl;
         for(size_t j = 0; j < queries[0].size(); j++) {
             if (ranked_scores[i][j].first == gt_nn ){
                 if(j < 1) n_1++;
