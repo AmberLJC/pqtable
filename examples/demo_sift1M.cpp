@@ -16,7 +16,7 @@ float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
 
     return res;
 }
-int main(){
+int main(int argc, char *argv []){
     // (1) Make sure you have already downloaded siftsmall data in data/ by scripts/download_siftsmall.sh
 
     // (2) Read vectors
@@ -35,7 +35,14 @@ int main(){
     std::cout<<queries.size()<<" * "<<queries[0].size()<<std::endl;
 
     // (3) Train a product quantizer
-    int M = 2;
+    int M ;
+    if(argc == 1){
+        M =2;
+    }else{
+        M = atoi(argv[1]);
+    }
+
+
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
 
