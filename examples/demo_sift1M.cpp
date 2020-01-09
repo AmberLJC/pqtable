@@ -104,6 +104,8 @@ int main(int argc, char *argv []){
     }
     std::cout << std::endl;
 */
+    std::cout << "=== Compute recall ===" << std::endl;
+
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];
