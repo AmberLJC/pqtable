@@ -99,9 +99,13 @@ std::vector<std::vector<float> > ReadTopN(std::string filename, std::string ext,
 }
 
 double Elapsed() {
-    timespec ts;
-    clock_gettime(CLOCK_REALTIME, &ts);
-    return ts.tv_sec + ts.tv_nsec * 1e-6;
+   // timespec ts;
+   // clock_gettime(CLOCK_REALTIME, &ts);
+   // return ts.tv_sec + ts.tv_nsec * 1e-6;
+
+    struct timeval tv;
+    gettimeofday (&tv, nullptr);
+    return  tv.tv_sec + tv.tv_usec * 1e-6;
 }
 
 void WriteScores(std::string path, const std::vector<std::vector<std::pair<int, float> > > &scores)
