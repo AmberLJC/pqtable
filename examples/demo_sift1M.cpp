@@ -82,9 +82,11 @@ int main(int argc, char *argv []){
     gt_dis.resize( queries.size());
     float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
+#pragma omp parallel for
     for(int q = 0; q < (int) queries.size(); ++q){
         int min_idx = -1;
         float min_dis = 1e20;
+#pragma omp parallel for
         for (size_t i = 0; i < bases.size(); ++i){
             tmp_res = eucl_dist_vec(bases[i],queries[q]);
             if (tmp_res < min_dis){
