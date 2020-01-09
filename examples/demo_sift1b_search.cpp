@@ -49,7 +49,7 @@ int main(int argc, char *argv []){
 
     // (5) Write scores
     pqtable::WriteScores("score.txt", ranked_scores);
-
+/*
 
     std::vector<int> gt_index;
     gt_index.resize( queries.size());
@@ -103,7 +103,7 @@ int main(int argc, char *argv []){
     printf("R@1 = %.3f\n", n_1 / float(queries.size()));
     printf("R@10 = %.3f\n", n_10 / float(queries.size()));
     printf("R@100 = %.3f\n", n_100 / float(queries.size()));
-
+*/
 
     return 0;
 }
