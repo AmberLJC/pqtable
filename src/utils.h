@@ -78,16 +78,6 @@ std::vector<std::vector<float> > ReadTopN(std::string filename, std::string ext,
 
 
 
-    float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
-        float res = 0;
-#pragma omp parallel for
-        for (size_t i = 0; i < a.size(); ++i){
-            res += (a[i]-b[i])* (a[i]-b[i]);
-        }
-
-        return res;
-    }
-
 
 
 // Timer function

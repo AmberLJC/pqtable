@@ -2,6 +2,16 @@
 #include "utils.h"
 #include "math.h"
 
+
+float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
+    float res = 0;
+#pragma omp parallel for
+    for (size_t i = 0; i < a.size(); ++i){
+        res += (a[i]-b[i])* (a[i]-b[i]);
+    }
+
+    return res;
+}
 int main(){
     // (1) Make sure you have already downloaded siftsmall data in data/ by scripts/download_siftsmall.sh
 

@@ -2,6 +2,16 @@
 #include "utils.h"
 
 
+
+float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
+    float res = 0;
+#pragma omp parallel for
+    for (size_t i = 0; i < a.size(); ++i){
+        res += (a[i]-b[i])* (a[i]-b[i]);
+    }
+
+    return res;
+}
 int main(int argc, char *argv []){
     int top_k;
     assert(argc == 1 || argc == 2);
