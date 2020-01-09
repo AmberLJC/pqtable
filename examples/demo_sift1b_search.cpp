@@ -58,11 +58,25 @@ int main(int argc, char *argv []){
     gt_dis.resize( queries.size());
     float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
+
+
+    pqtable::ItrReader reader("../../data/bigann_base.bvecs", "bvecs");
+    std::vector<std::vector<float> > buff;  // Buffer
+    int id_encoded = 0;
+
+    std::cout << "Start reading" << std::endl;
+    while(!reader.IsEnd()){
+        buff.push_back(reader.Next());  // Read a line (a vector) into the buffer
+        id_encoded++;
+        if (id_encoded % 10000 == 0)
+            std::cout << "Read "<<id_encoded <<" data." << std::endl;
+    }
+
     for(int q = 0; q < (int) queries.size(); ++q){
         int min_idx = -1;
         float min_dis = 1e20;
-        for (size_t i = 0; i < bases.size(); ++i){
-            tmp_res = eucl_dist_vec(bases[i],queries[q]);
+        for (size_t i = 0; i < buff.size(); ++i){
+            tmp_res = eucl_dist_vec(buff[i],queries[q]);
             if (tmp_res < min_dis){
                 min_dis = tmp_res;
                 min_idx = i;
@@ -71,7 +85,6 @@ int main(int argc, char *argv []){
         gt_index[q] = min_idx;
         gt_dis[q] = min_dis;
     }
-
 
 
     int n_1 = 0, n_10 = 0, n_100 = 0;

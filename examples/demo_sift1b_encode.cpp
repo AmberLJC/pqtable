@@ -56,6 +56,8 @@ int main(){
             std::cout << id_encoded << " / " << N << " vectors are encoded in total" << std::endl;
         }
     }
+
+
     if(0 < (int) buff.size()){ // Rest
         Assign(codes, id_encoded, EncodeParallel(pq, buff)); // Encode buff, and assign to codes
     }
