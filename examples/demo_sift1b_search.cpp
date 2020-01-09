@@ -13,6 +13,7 @@ float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
     return res;
 }
 int main(int argc, char *argv []){
+    double t0 = pqtable::Elapsed();
     int top_k;
     assert(argc == 1 || argc == 2);
     if(argc == 1){
@@ -40,12 +41,14 @@ int main(int argc, char *argv []){
     // ranked_scores[q][k] : top-k th result of the q-th query.
     std::vector<std::vector<std::pair<int, float> > >
             ranked_scores(queries.size(), std::vector<std::pair<int, float> >(top_k));
+double t1 = pqtable::Elapsed() -t0;
 
-    double t0 = pqtable::Elapsed();
     for(int q = 0; q < (int) queries.size(); ++q){
         ranked_scores[q] = table.Query(queries[q], top_k);
     }
-    std::cout << (pqtable::Elapsed() - t0)   << " [sec] for " <<  queries.size()<< " queries"<< std::endl;
+    double t2 = pqtable::Elapsed() -t0;
+
+    std::cout << (t2-t1  )   << " [sec] for " <<  queries.size()<< " queries"<< std::endl;
 
     // (5) Write scores
     pqtable::WriteScores("score.txt", ranked_scores);
