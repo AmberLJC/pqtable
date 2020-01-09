@@ -72,7 +72,7 @@ int main(int argc, char *argv []){
         ranked_scores[q] = tbl.Query(queries[q], top_k);
     }
 
-    std::cout << ( pqtable::Elapsed() - t0) << " [msec]" << std::endl;
+    std::cout << ( pqtable::Elapsed() - t0) / queries.size() << " [sec/query]" << std::endl;
 
 
     std::vector<int> gt_index;
