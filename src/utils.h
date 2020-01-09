@@ -5,7 +5,7 @@
 #include <fstream>
 #include <time.h>
 #include <omp.h>
-
+#include <sys/time.h>
 namespace pqtable {
 
 // Iterative reader class for reading .bvecs or .fvecs files.
