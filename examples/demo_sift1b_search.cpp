@@ -41,7 +41,10 @@ int main(int argc, char *argv []){
     // ranked_scores[q][k] : top-k th result of the q-th query.
     std::vector<std::vector<std::pair<int, float> > >
             ranked_scores(queries.size(), std::vector<std::pair<int, float> >(top_k));
-double t1 = pqtable::Elapsed() -t0;
+
+    std::cout<<"Start searching: "<<std::endl;
+
+    double t1 = pqtable::Elapsed() -t0;
 
     for(int q = 0; q < (int) queries.size(); ++q){
         ranked_scores[q] = table.Query(queries[q], top_k);
