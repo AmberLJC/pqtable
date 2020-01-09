@@ -196,7 +196,6 @@ std::pair<int, float> PQMultiTable::Query(const std::vector<float> &query) // fo
                 }
             }
         }
-
     }
 }
 

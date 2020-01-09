@@ -2,16 +2,6 @@
 #include "utils.h"
 #include "math.h"
 
-float eucl_dist_vec(std::vector<float> a, std::vector<float> b){
-    float res = 0;
-#pragma omp parallel for
-    for (size_t i = 0; i < a.size(); ++i){
-        res += (a[i]-b[i])* (a[i]-b[i]);
-    }
-
-return res;
-}
-
 int main(){
     // (1) Make sure you have already downloaded siftsmall data in data/ by scripts/download_siftsmall.sh
 
@@ -19,13 +9,13 @@ int main(){
     std::vector<std::vector<float> > queries = pqtable::ReadTopN("../../data/siftsmall/siftsmall_query.fvecs", "fvecs");  // Because top_n is not set, read all vectors
     std::vector<std::vector<float> > bases = pqtable::ReadTopN("../../data/siftsmall/siftsmall_base.fvecs", "fvecs");
     std::vector<std::vector<float> > learns = pqtable::ReadTopN("../../data/siftsmall/siftsmall_learn.fvecs", "fvecs");
+    //std::vector<std::vector<int> > label = pqtable::ReadTopN("../../data/siftsmall/siftsmall_learn.fvecs", "fvecs");
 
     std::cout<<"bases data shape: "<<std::endl;
     std::cout<<bases.size()<<" * "<<bases[0].size()<<std::endl;
 
     std::cout<<"learn data shape: "<<std::endl;
     std::cout<<learns.size()<<" * "<<learns[0].size()<<std::endl;
-
 
     std::cout<<"queries data shape: "<<std::endl;
     std::cout<<queries.size()<<" * "<<queries[0].size()<<std::endl;
@@ -34,7 +24,6 @@ int main(){
     int M = 2;
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
-
 
     // (4) Encode vectors to PQ-codes
     std::cout << "=== Encode vectors into PQ codes ===" << std::endl;
@@ -62,7 +51,7 @@ int main(){
         ranked_scores[q] = tbl.Query(queries[q], top_k);
     }
 
-    std::cout << (pqtable::Elapsed() - t0) / queries.size() * 1000 << " [msec/query]" << std::endl;
+    std::cout << ( pqtable::Elapsed() - t0) << " [msec]" << std::endl;
 
 
     std::vector<int> gt_index;
@@ -85,12 +74,13 @@ int main(){
         gt_index[q] = min_idx;
         gt_dis[q] = min_dis;
     }
+    /*
     std::cout << "=== Search Result ===" << std::endl;
     for(size_t q = 0; q < ranked_scores[0].size(); ++q){
         std::cout <<"#"<<q<< "# [ "<<  ranked_scores[0][q].second<< " vs. "<< eucl_dist_vec(bases[ranked_scores[0][q].first ],queries[0]) <<" ]. ";
     }
     std::cout << std::endl;
-
+*/
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_index[i];

@@ -19,6 +19,9 @@ int main(int argc, char *argv []){
     // (2) Read query vectors
     std::vector<std::vector<float> > queries = pqtable::ReadTopN("../../data/bigann_query.bvecs", "bvecs");
 
+    std::cout<<"queries data shape: "<<std::endl;
+    std::cout<<queries.size()<<" * "<<queries[0].size()<<std::endl;
+
     // (3) Read the PQTable
     pqtable::PQTable table("pqtable");
 
@@ -32,10 +35,51 @@ int main(int argc, char *argv []){
     for(int q = 0; q < (int) queries.size(); ++q){
         ranked_scores[q] = table.Query(queries[q], top_k);
     }
-    std::cout << (pqtable::Elapsed() - t0) / queries.size() * 1000 << " [msec/query] " << std::endl;
+    std::cout << (pqtable::Elapsed() - t0) / queries.size()  << " [msec/query] " << std::endl;
 
     // (5) Write scores
     pqtable::WriteScores("score.txt", ranked_scores);
+
+
+    std::vector<int> gt_index;
+    gt_index.resize( queries.size());
+
+    std::vector<float> gt_dis;
+    gt_dis.resize( queries.size());
+    float tmp_res = 0;
+    std::cout << "=== Find ground truth ===" << std::endl;
+    for(int q = 0; q < (int) queries.size(); ++q){
+        int min_idx = -1;
+        float min_dis = 1e20;
+        for (size_t i = 0; i < bases.size(); ++i){
+            tmp_res = eucl_dist_vec(bases[i],queries[q]);
+            if (tmp_res < min_dis){
+                min_dis = tmp_res;
+                min_idx = i;
+            }
+        }
+        gt_index[q] = min_idx;
+        gt_dis[q] = min_dis;
+    }
+
+
+
+    int n_1 = 0, n_10 = 0, n_100 = 0;
+    for(size_t i = 0; i < queries.size(); i++) {
+        int gt_nn = gt_index[i];
+        // std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << sqrt(gt_dis[i]) << std::endl;
+        // std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", with real dist = " << sqrt(eucl_dist_vec(queries[i], bases[gt_nn]) ) << std::endl;
+        for(size_t j = 0; j < queries[0].size(); j++) {
+            if (ranked_scores[i][j].first == gt_nn ){
+                if(j < 1) n_1++;
+                if(j < 10) n_10++;
+                if(j < 100) n_100++;
+            }
+        }
+    }
+    printf("R@1 = %.3f\n", n_1 / float(queries.size()));
+    printf("R@10 = %.3f\n", n_10 / float(queries.size()));
+    printf("R@100 = %.3f\n", n_100 / float(queries.size()));
 
 
     return 0;
