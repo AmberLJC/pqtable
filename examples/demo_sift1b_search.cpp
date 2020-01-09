@@ -45,7 +45,7 @@ int main(int argc, char *argv []){
     for(int q = 0; q < (int) queries.size(); ++q){
         ranked_scores[q] = table.Query(queries[q], top_k);
     }
-    std::cout << (pqtable::Elapsed() - t0) / queries.size()  << " [sec/query] " << std::endl;
+    std::cout << (pqtable::Elapsed() - t0)   << " [sec] for " <<  queries.size()<< " queries"<< std::endl;
 
     // (5) Write scores
     pqtable::WriteScores("score.txt", ranked_scores);
