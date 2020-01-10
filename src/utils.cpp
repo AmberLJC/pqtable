@@ -37,7 +37,7 @@ std::vector<float> FvecsItrReader::Next()
 
     bool IvecsItrReader::IsEnd() { return eof_flag; }
 
-    std::vector<float> IvecsItrReader::Next()
+    std::vector<int> IvecsItrReader::Next()
     {
         std::vector<int> prev_vec = vec; // return the currently stored vec
         int D;
