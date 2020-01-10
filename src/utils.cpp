@@ -96,7 +96,7 @@ ItrReader::ItrReader(std::string filename, std::string ext){
         m_reader = (I_ItrReader *) new BvecsItrReader(filename);
 
     }else if(ext == "ivecs"){
-        m_reader = (I_ItrReader *) new IvecsItrReader(filename);
+        m_reader = (II_ItrReader *) new IvecsItrReader(filename);
 
     }else{
         std::cerr << "Error: strange ext type: " << ext << "in ItrReader" << std::endl;

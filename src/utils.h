@@ -56,7 +56,15 @@ private:
     bool eof_flag;
 };
 // Iterative reader for ivec file
-    class IvecsItrReader : I_ItrReader{
+    class II_ItrReader{
+    public:
+        virtual ~II_ItrReader() {}
+        virtual bool IsEnd() = 0;
+        virtual std::vector<int> Next() = 0;
+    };
+
+
+    class IvecsItrReader : II_ItrReader{
     public:
         IvecsItrReader(std::string filename);
         bool IsEnd();
