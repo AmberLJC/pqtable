@@ -64,7 +64,7 @@ int main(int argc, char *argv []){
 
     std::vector<float> gt_dis;
     gt_dis.resize( queries.size());
-    float tmp_res = 0;
+    //float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
 
 /*
@@ -108,9 +108,9 @@ int main(int argc, char *argv []){
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
         int gt_nn = gt_knn[i][0];
-        // std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << sqrt(gt_dis[i]) << std::endl;
+         std::cout << i << "th query: nearest_id=" << gt_nn  << std::endl;
         // std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", with real dist = " << sqrt(eucl_dist_vec(queries[i], bases[gt_nn]) ) << std::endl;
-        for(size_t j = 0; j < queries[0].size(); j++) {
+        for(size_t j = 0; j < top_k; j++) {
             if (ranked_scores[i][j].first == gt_nn ){
                 if(j < 1) n_1++;
                 if(j < 10) n_10++;
