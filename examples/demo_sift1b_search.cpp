@@ -96,18 +96,16 @@ int main(int argc, char *argv []){
 
 */
 
-    std::vector<std::vector<float> > gt_knn = pqtable::ReadTopN("../../data/gnd/idx_1000M.ivecs", "fvecs");
+    size_r nq ;
+    size_r topk ;
+    int *gt_knn = ivecs_read("../../data/gnd/idx_1000M.ivecs ", &topk, &nq);
 
 
-    std::cout<<"ground truth shape: "<<std::endl;
-    std::cout<<gt_knn.size()<<" * "<<gt_knn[0].size()<<std::endl;
-
-
-
+    std::cout << "ground truth shape: "<< nq<<" * " << topk << std::endl;
 
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
-        int gt_nn = gt_knn[i][0];
+        int gt_nn = gt_knn[ i*topk ];
          std::cout << i << "th query: nearest_id = " << gt_nn  << std::endl;
         // std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", with real dist = " << sqrt(eucl_dist_vec(queries[i], bases[gt_nn]) ) << std::endl;
         for(int j = 0; j < top_k; j++) {

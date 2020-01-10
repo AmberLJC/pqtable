@@ -2,6 +2,48 @@
 
 namespace pqtable {
 
+
+
+    float * fvecs_read (const char *fname,
+                        size_t *d_out, size_t *n_out)
+    {
+        FILE *f = fopen(fname, "r");
+        if(!f) {
+            fprintf(stderr, "could not open %s\n", fname);
+            perror("");
+            abort();
+        }
+        int d;
+        fread(&d, 1, sizeof(int), f);
+        assert((d > 0 && d < 1000000) || !"unreasonable dimension");
+        fseek(f, 0, SEEK_SET);
+        struct stat st;
+        fstat(fileno(f), &st);
+        size_t sz = st.st_size;
+        assert(sz % ((d + 1) * 4) == 0 || !"weird file size");
+        size_t n = sz / ((d + 1) * 4);
+
+        *d_out = d; *n_out = n;
+        float *x = new float[n * (d + 1)];
+        size_t nr = fread(x, sizeof(float), n * (d + 1), f);
+        assert(nr == n * (d + 1) || !"could not read whole file");
+
+        // shift array to remove row headers
+        for(size_t i = 0; i < n; i++)
+            memmove(x + i * d, x + 1 + i * (d + 1), d * sizeof(*x));
+
+        fclose(f);
+        return x;
+    }
+
+// not very clean, but works as long as sizeof(int) == sizeof(float)
+    int *ivecs_read(const char *fname, size_t *d_out, size_t *n_out)
+    {
+        return (int*)fvecs_read(fname, d_out, n_out);
+    }
+
+
+
 FvecsItrReader::FvecsItrReader(std::string filename)
 {
     ifs.open(filename, std::ios::binary);
@@ -26,36 +68,6 @@ std::vector<float> FvecsItrReader::Next()
     }
     return prev_vec;
 }
-
-
-    IvecsItrReader::IvecsItrReader(std::string filename)
-    {
-        ifs.open(filename, std::ios::binary);
-        assert(ifs.is_open());
-        Next();
-    }
-
-    bool IvecsItrReader::IsEnd() { return eof_flag; }
-
-    std::vector<int> IvecsItrReader::Next()
-    {
-        std::vector<int> prev_vec = vec; // return the currently stored vec
-        int D;
-        if(ifs.read( (char *) &D, sizeof(int) )){ // read "D"
-            // Then, read a D-dim vec
-            vec.resize(D); // allocate D-dim
-            assert(ifs.read( (char *) vec.data(), sizeof(int) * D)); // Read D * float.
-            eof_flag = false;
-        }else{
-            vec.clear();
-            eof_flag = true;
-        }
-        return prev_vec;
-    }
-
-
-
-
 
 BvecsItrReader::BvecsItrReader(std::string filename)
 {
@@ -95,10 +107,7 @@ ItrReader::ItrReader(std::string filename, std::string ext){
     }else if(ext == "bvecs"){
         m_reader = (I_ItrReader *) new BvecsItrReader(filename);
 
-    }else if(ext == "ivecs"){
-        m_reader = (II_ItrReader *) new IvecsItrReader(filename);
-
-    }else{
+    } else{
         std::cerr << "Error: strange ext type: " << ext << "in ItrReader" << std::endl;
         exit(1);
     }
