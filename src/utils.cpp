@@ -44,7 +44,6 @@ std::vector<float> BvecsItrReader::Next()
         // Then, read a D-dim vec
         vec.resize(D); // allocate D-dim
         std::vector<uchar> buff(D);
-
         assert(ifs.read( (char *) buff.data(), sizeof(uchar) * D)); // Read D * uchar.
 
         // Convert uchar to float

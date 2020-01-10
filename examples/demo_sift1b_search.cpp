@@ -51,11 +51,13 @@ int main(int argc, char *argv []){
     }
     double t2 = pqtable::Elapsed() -t0;
 
-    std::cout << (t2-t1  )   << " [sec] for " <<  queries.size()<< " queries"<< std::endl;
+    std::cout << (t2-t1) << " [sec] for " <<  queries.size()<< " queries"<< std::endl;
 
     // (5) Write scores
     pqtable::WriteScores("score.txt", ranked_scores);
-/*
+
+
+
 
     std::vector<int> gt_index;
     gt_index.resize( queries.size());
@@ -65,8 +67,8 @@ int main(int argc, char *argv []){
     float tmp_res = 0;
     std::cout << "=== Find ground truth ===" << std::endl;
 
-
-    pqtable::ItrReader reader("../../data/bigann_base.bvecs", "bvecs");
+/*
+    pqtable::ItrReader reader("../../data/gnd/idx_1000M.ivecs", "fvecs");
     std::vector<std::vector<float> > buff;  // Buffer
     int id_encoded = 0;
 
@@ -92,10 +94,20 @@ int main(int argc, char *argv []){
         gt_dis[q] = min_dis;
     }
 
+*/
+
+    std::vector<std::vector<float> > gt_knn = pqtable::ReadTopN("../../data/gnd/idx_1000M.ivecs", "fvecs");
+
+
+    std::cout<<"ground truth shape: "<<std::endl;
+    std::cout<<gt_knn.size()<<" * "<<gt_knn[0].size()<<std::endl;
+
+
+
 
     int n_1 = 0, n_10 = 0, n_100 = 0;
     for(size_t i = 0; i < queries.size(); i++) {
-        int gt_nn = gt_index[i];
+        int gt_nn = gt_knn[i][0];
         // std::cout << i << "th query: nearest_id=" << gt_nn << ", dist=" << sqrt(gt_dis[i]) << std::endl;
         // std::cout << "PQ's nearest_id=" << ranked_scores[i][0].first  << ", with real dist = " << sqrt(eucl_dist_vec(queries[i], bases[gt_nn]) ) << std::endl;
         for(size_t j = 0; j < queries[0].size(); j++) {
@@ -109,7 +121,6 @@ int main(int argc, char *argv []){
     printf("R@1 = %.3f\n", n_1 / float(queries.size()));
     printf("R@10 = %.3f\n", n_10 / float(queries.size()));
     printf("R@100 = %.3f\n", n_100 / float(queries.size()));
-*/
 
     return 0;
 }

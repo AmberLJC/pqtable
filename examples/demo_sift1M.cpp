@@ -68,6 +68,8 @@ int main(int argc, char *argv []){
     int top_k = 100;
     std::vector<std::vector<std::pair<int, float> > >
                                            ranked_scores(queries.size(), std::vector<std::pair<int, float> >(top_k));
+
+    std::cout << "=== Start search ===" << std::endl;
     for(int q = 0; q < (int) queries.size(); ++q){
         ranked_scores[q] = tbl.Query(queries[q], top_k);
     }
