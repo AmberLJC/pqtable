@@ -6,6 +6,11 @@
 #include <time.h>
 #include <omp.h>
 #include <sys/time.h>
+
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 namespace pqtable {
 
 // Iterative reader class for reading .bvecs or .fvecs files.

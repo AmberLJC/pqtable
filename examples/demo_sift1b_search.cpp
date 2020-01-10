@@ -96,9 +96,9 @@ int main(int argc, char *argv []){
 
 */
 
-    size_r nq ;
-    size_r topk ;
-    int *gt_knn = ivecs_read("../../data/gnd/idx_1000M.ivecs ", &topk, &nq);
+    size_t nq ;
+    size_t topk ;
+    int *gt_knn = pqtable::ivecs_read("../../data/gnd/idx_1000M.ivecs ", &topk, &nq);
 
 
     std::cout << "ground truth shape: "<< nq<<" * " << topk << std::endl;
