@@ -27,6 +27,36 @@ std::vector<float> FvecsItrReader::Next()
     return prev_vec;
 }
 
+
+    IvecsItrReader::IvecsItrReader(std::string filename)
+    {
+        ifs.open(filename, std::ios::binary);
+        assert(ifs.is_open());
+        Next();
+    }
+
+    bool IvecsItrReader::IsEnd() { return eof_flag; }
+
+    std::vector<float> IvecsItrReader::Next()
+    {
+        std::vector<int> prev_vec = vec; // return the currently stored vec
+        int D;
+        if(ifs.read( (char *) &D, sizeof(int) )){ // read "D"
+            // Then, read a D-dim vec
+            vec.resize(D); // allocate D-dim
+            assert(ifs.read( (char *) vec.data(), sizeof(int) * D)); // Read D * float.
+            eof_flag = false;
+        }else{
+            vec.clear();
+            eof_flag = true;
+        }
+        return prev_vec;
+    }
+
+
+
+
+
 BvecsItrReader::BvecsItrReader(std::string filename)
 {
     ifs.open(filename, std::ios::binary);
@@ -64,6 +94,10 @@ ItrReader::ItrReader(std::string filename, std::string ext){
         m_reader = (I_ItrReader *) new FvecsItrReader(filename);
     }else if(ext == "bvecs"){
         m_reader = (I_ItrReader *) new BvecsItrReader(filename);
+
+    }else if(ext == "ivecs"){
+        m_reader = (I_ItrReader *) new IvecsItrReader(filename);
+
     }else{
         std::cerr << "Error: strange ext type: " << ext << "in ItrReader" << std::endl;
         exit(1);

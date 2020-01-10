@@ -55,7 +55,18 @@ private:
     std::vector<float> vec; // store the next vec
     bool eof_flag;
 };
-
+// Iterative reader for ivec file
+    class IvecsItrReader : I_ItrReader{
+    public:
+        IvecsItrReader(std::string filename);
+        bool IsEnd();
+        std::vector<int> Next();
+    private:
+        IvecsItrReader(); // prohibit default construct
+        std::ifstream ifs;
+        std::vector<int> vec; // store the next vec
+        bool eof_flag;
+    };
 // Proxy class
 class ItrReader{
 public:
