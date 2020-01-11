@@ -13,7 +13,7 @@ PQSingleTable::PQSingleTable(const std::vector<PQ::Array> &codewords, const Ucha
 
     m_sHashTable.init(8 * m_PQ.GetM());
     for(int n = 0; n < pq_codes.Size(); ++n){
-        if(n % 10000000 == 0){
+        if(n % 1000 == 0){
             std::cout << "Build pqtable "<<n <<" / "<< pq_codes.Size() << std::endl;
         }
         uint key;
