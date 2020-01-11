@@ -108,12 +108,16 @@ PQMultiTable::PQMultiTable(const std::vector<PQ::Array> &codewords, const UcharV
     // Setup hashtables
     int each_M = m_PQ.GetM() / m_T;
     m_sHashTableEach.resize(m_T);
+    std::cout << "Initial hash table" << std::endl;
 
     for(int t = 0; t < m_T; ++t){
         m_sHashTableEach[t].init(8 * each_M);
     }
 
     for(int n = 0; n < pq_codes.Size(); ++n){
+        if(n%1000==0){
+            std::cout << n << " / "<< pq_codes.Size() << std::endl;
+        }
         std::vector<uchar> code = pq_codes.GetVec(n);
         for(int t = 0; t < m_T; ++t){
             uint key;
@@ -269,8 +273,6 @@ std::vector<std::pair<int, float> > PQMultiTable::Query(const std::vector<float>
     }
 }
 
-
-
 void PQMultiTable::Write(std::string dir_path){
     assert(dir_path.substr((int) dir_path.size() - 1) != "/"); // dir_path must be "some_dir". Not "some_dir/"
 
@@ -314,10 +316,11 @@ PQTable::PQTable(const std::vector<PQ::Array> &codewords, const UcharVecs &pq_co
     if(T == -1){
         T = PQMultiTable::OptimalT( (int) codewords.size() * 8, pq_codes.Size());
     }
-
     if(T == 1){
+        std::cout << "Single table" << std::endl;
         m_table = (I_PQTable *) new PQSingleTable(codewords, pq_codes);
     }else if(1 < T){
+        std::cout << "Multi table" << std::endl;
         m_table = (I_PQTable *) new PQMultiTable(codewords, pq_codes, T);
     }else{
         std::cerr << "Error: strange T: " << T << " in PQTable construction" << std::endl;
