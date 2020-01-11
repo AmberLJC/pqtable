@@ -13,6 +13,9 @@ PQSingleTable::PQSingleTable(const std::vector<PQ::Array> &codewords, const Ucha
 
     m_sHashTable.init(8 * m_PQ.GetM());
     for(int n = 0; n < pq_codes.Size(); ++n){
+        if(n % 10000000 == 0){
+            std::cout << "Build pqtable "<<n <<" / "<< pq_codes.Size() << std::endl;
+        }
         uint key;
         CodeToKey::CodeToKey1(m_PQ.GetM(), pq_codes.GetVec(n), &key);
         m_sHashTable.insert(key, (uint) n);

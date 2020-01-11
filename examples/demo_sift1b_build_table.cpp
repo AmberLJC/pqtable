@@ -16,6 +16,8 @@ int main(){
     // (4) Build and write a PQTable
     std::cout << "Start to build pqtable" << std::endl;
     pqtable::PQTable pq_table(codewords, codes);
+
+    std::cout << "Write into pqtable/" << std::endl;
     pq_table.Write("pqtable");  // write the table into "pqtable" dir.
 
     return 0;
