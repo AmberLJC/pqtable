@@ -108,14 +108,13 @@ PQMultiTable::PQMultiTable(const std::vector<PQ::Array> &codewords, const UcharV
     // Setup hashtables
     int each_M = m_PQ.GetM() / m_T;
     m_sHashTableEach.resize(m_T);
-    std::cout << "Initial hash table" << std::endl;
 
     for(int t = 0; t < m_T; ++t){
         m_sHashTableEach[t].init(8 * each_M);
     }
 
     for(int n = 0; n < pq_codes.Size(); ++n){
-        if(n%1000==0){
+        if(n%10000==0){
             std::cout << n << " / "<< pq_codes.Size() << std::endl;
         }
         std::vector<uchar> code = pq_codes.GetVec(n);
