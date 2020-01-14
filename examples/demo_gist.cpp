@@ -114,7 +114,7 @@ int main(int argc, char *argv []){
     }
 
     std::cout << ( pqtable::Elapsed() - t0) << " [msec]" << std::endl;
-    char gnd_filename[50] = "../../naive_PQ_sparse/gist/gist_groundtruth.ivecs";
+    char gnd_filename[50] = "../../gist/gist_groundtruth.ivecs";
 
 
     size_t nqq;
