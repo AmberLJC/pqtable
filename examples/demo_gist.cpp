@@ -61,9 +61,9 @@ int main(){
     // (1) Make sure you have already downloaded siftsmall data in data/ by scripts/download_siftsmall.sh
 
     // (2) Read vectors
-    std::vector<std::vector<float> > queries = pqtable::ReadTopN("../../gist/siftsmall/gist_query.fvecs", "fvecs");  // Because top_n is not set, read all vectors
-    std::vector<std::vector<float> > bases = pqtable::ReadTopN("../../gist/siftsmall/gist_base.fvecs", "fvecs");
-    std::vector<std::vector<float> > learns = pqtable::ReadTopN("../../gist/siftsmall/gist_learn.fvecs", "fvecs");
+    std::vector<std::vector<float> > queries = pqtable::ReadTopN("../../gist/gist_query.fvecs", "fvecs");  // Because top_n is not set, read all vectors
+    std::vector<std::vector<float> > bases = pqtable::ReadTopN("../../gist/gist_base.fvecs", "fvecs");
+    std::vector<std::vector<float> > learns = pqtable::ReadTopN("../../gist/gist_learn.fvecs", "fvecs");
     //std::vector<std::vector<int> > label = pqtable::ReadTopN("../../data/siftsmall/siftsmall_learn.fvecs", "fvecs");
 
 
