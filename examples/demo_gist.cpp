@@ -57,7 +57,7 @@ int *ivecs_read(const char *fname, size_t *d_out, size_t *n_out)
 
 
 
-int main(){
+int main(int argc, char *argv []){
     // (1) Make sure you have already downloaded siftsmall data in data/ by scripts/download_siftsmall.sh
 
     // (2) Read vectors
@@ -65,7 +65,6 @@ int main(){
     std::vector<std::vector<float> > bases = pqtable::ReadTopN("../../gist/gist_base.fvecs", "fvecs");
     std::vector<std::vector<float> > learns = pqtable::ReadTopN("../../gist/gist_learn.fvecs", "fvecs");
     //std::vector<std::vector<int> > label = pqtable::ReadTopN("../../data/siftsmall/siftsmall_learn.fvecs", "fvecs");
-
 
    std::cout<<"bases data shape: "<<std::endl;
     std::cout<<bases.size()<<" * "<<bases[0].size()<<std::endl;
@@ -77,7 +76,14 @@ int main(){
     std::cout<<queries.size()<<" * "<<queries[0].size()<<std::endl;
 
     // (3) Train a product quantizer
-    int M = 4;
+    int M;
+    assert(argc == 1 || argc == 2);
+    if(argc == 1){
+        M = 2;
+    }else{
+        M = atoi(argv[1]);
+    }
+
     std::cout << "=== Train a product quantizer ===" << std::endl;
     pqtable::PQ pq(pqtable::PQ::Learn(learns, M));
 
